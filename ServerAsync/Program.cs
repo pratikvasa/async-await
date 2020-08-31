@@ -12,7 +12,7 @@ namespace GreeterServer
         public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
             await Task.Delay(1000);
-            return Task.FromResult(new HelloReply { Message = "Hello " + request.Name });
+            return new HelloReply { Message = "Hello " + request.Name };
         }
     }
 
