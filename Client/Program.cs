@@ -33,12 +33,13 @@ namespace GreeterClient
                 Console.WriteLine(ThreadNumber);
                 string ThreadName = "Thread " + ThreadNumber.ToString();
                 Console.WriteLine(ThreadName + ": Started");
+                var startTime = DateTime.Now;
                 //var channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
                 var client = new Greeter.GreeterClient(channel);
                 String user = "you";
                 var reply = client.SayHello(new HelloRequest { Name = user });
 
-                Console.WriteLine(ThreadName + ": Finished...");
+                Console.WriteLine(ThreadName + ": Finished after " + (DateTime.Now-startTime).TotalMilliseconds);
             }
             catch (Exception ex)
             {

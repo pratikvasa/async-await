@@ -118,7 +118,7 @@ namespace AsyncExample
             Console.WriteLine("ToConsumeAsyncFunctionInSyncFunction Called");
             Task<string> task = ProperFunctionThatReturnsString(); //Returns Immediately
             Console.WriteLine("Task Returned. Waiting now...");
-            string s = task.Result; //Blocking call
+            string s = await task; //Blocking call
             Console.WriteLine("The Function ProperFunctionThatReturnsString has returned");
         }
 
@@ -127,7 +127,7 @@ namespace AsyncExample
             Console.WriteLine("ToConsumeAsyncVoidFunctionInSyncFunction Called");
             Task task = AsyncFunc4(); //Returns Immediately
             Console.WriteLine("Task Returned. Waiting now...");
-            string s = task.Wait(); //Blocking call
+            task.Wait(); //Blocking call
             Console.WriteLine("The Function AsyncFunc4 has returned");
         }
 
