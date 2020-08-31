@@ -9,9 +9,9 @@ namespace GreeterServer
     class GreeterImpl : Greeter.GreeterBase
     {
         // Server side handler of the SayHello RPC
-        public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+        public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
             return Task.FromResult(new HelloReply { Message = "Hello " + request.Name });
         }
     }

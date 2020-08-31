@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Grpc.Core;
 using Helloworld;
 
@@ -6,24 +7,44 @@ namespace GreeterClient
 {
     class Program
     {
+        private static Channel channel;
         public static void Main(string[] args)
         {
-            Channel channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
+            channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
 
-            var client = new Greeter.GreeterClient(channel);
-            String user = "you";
+            ThreadPool.SetMaxThreads(50, 50);
+            ThreadPool.SetMinThreads(50, 50);
 
-            var reply = client.SayHello(new HelloRequest { Name = user });
-            Console.WriteLine("Greeting: " + reply.Message);
-            SetMaxThreads (10,10);
-
-            for(int i = 0;i<100;i++){
-
+            for (int i = 0; i < 200; i++)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(TaskCallBack), i);
             }
 
-            channel.ShutdownAsync().Wait();
+            //channel.ShutdownAsync().Wait();
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
+
+
+        private static void TaskCallBack(Object ThreadNumber)
+        {
+            try
+            {
+                Console.WriteLine(ThreadNumber);
+                string ThreadName = "Thread " + ThreadNumber.ToString();
+                Console.WriteLine(ThreadName + ": Started");
+                //var channel = new Channel("127.0.0.1:30051", ChannelCredentials.Insecure);
+                var client = new Greeter.GreeterClient(channel);
+                String user = "you";
+                var reply = client.SayHello(new HelloRequest { Name = user });
+
+                Console.WriteLine(ThreadName + ": Finished...");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+        }
     }
+
 }

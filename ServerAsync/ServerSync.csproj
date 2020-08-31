@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="..\proto\hello.proto" GrpcServices="Client" />
+        <Protobuf Include="..\proto\hello.proto" GrpcServices="Server" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Google.Protobuf" Version="3.12.3" />
